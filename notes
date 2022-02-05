@@ -1,0 +1,22 @@
+  React.useEffect(() => {   
+    fetch('https://opentdb.com/api.php?amount=5')
+        .then(res => res.json())
+        .then(data => { 
+            setQuestions(data.results.map(questionItem => {
+              const answer = decodeString(questionItem.correct_answer)
+              const options = [
+                ...questionItem.incorrect_answers.map(a => decodeString(a)),
+                answer
+              ]
+              const randomSort = options.sort(() => Math.random() - 0.5)
+
+                return {
+                    id: nanoid(),
+                    question: decodeString(questionItem.question),
+                    answer: answer,
+                    options: randomSort,
+                    isHeld: false
+                }
+            }))
+    })      
+}, [])  
